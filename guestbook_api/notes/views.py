@@ -6,5 +6,5 @@ from .serializers import NoteSerializer
 # Create your views here.
 
 class NotesViewset(viewsets.ModelViewSet):
-    serializer=NoteSerializer
+    serializer_class=NoteSerializer
     queryset=Note.objects.all()

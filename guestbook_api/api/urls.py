@@ -21,11 +21,11 @@ from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
 
-router.register('/posts',NotesViewset)
+router.register('posts',NotesViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include(router.urls))
-
-
+    path('',include(router.urls)),
 ]
+
+https://youtu.be/9dwyXq9G_MQ?t=1610
