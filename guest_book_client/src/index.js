@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client'; 
 import './styles/main.css'
+import { Note } from './components/note';
 
 const baseURL = 'http://localhost:8000'
 
@@ -10,24 +11,26 @@ const App = () => {
   const [modalVisible,setModalVisible]=useState(false);
   const [title,setTitle ] = useState('')
   const [content,setContent]=useState('')
+  const [posts,setPosts]=useState([])
  
   const createNote=(event)=>{
-    event.preventDefault();
-    console.log(title)
-    console.log(content)
+  //   event.preventDefault();
+  //   console.log(title)
+  //   console.log(content)
 
-    setTitle('')
-    setContent('')
-    setModalVisible(false)
+  //   setTitle('')
+  //   setContent('')
+  //   setModalVisible(false)
 
   }
 
   const getAllPosts = async () =>{
-    const respose = await fetch(`${baseURL}/posts`)
-    const data = await respose.jason()
+    const response = await fetch(`${baseURL}/posts/`)
+    const data = await response.json()
 
-    if(respose.ok){
+    if(response.ok){
       console.log(data)
+      setPosts(data)
     }
     else{
       console.log("Failed Network Request")
@@ -39,6 +42,10 @@ const App = () => {
       getAllPosts()
     },[]
   )
+
+  const deleteItem=(noteId)=>{
+    console.log(noteId)
+  }
 
   return (
     <div>
@@ -52,9 +59,28 @@ const App = () => {
           > Add Note</a>
         </div>
       </div>
-      <div className="posts">
-        <p className='centerText'>No Posts</p>
-      </div>
+      
+      {posts.length > 0?
+          (<div className="post-list">
+          {
+            posts.map(
+              (item)=>(
+                <Note title={item.title} 
+                content={item.content}
+                        onclick={deleteItem(item.id)}
+                        key={item.id}
+                  />
+
+                )
+              )
+          }
+          </div>)
+          :(
+            <div className="posts">
+              <p className='centerText'>No Posts</p>
+            </div>
+          )
+        }
       <div className={modalVisible? 'modal':'modal-not-visible'}>
         <div className='form'>
           <div className='form-header'>
