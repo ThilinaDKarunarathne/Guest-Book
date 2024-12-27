@@ -4,6 +4,7 @@ import './styles/main.css'
 import { Note } from './components/note';
 
 const baseURL = 'http://localhost:8000'
+const noteId  = null
 
 
 const App = () => {
@@ -13,14 +14,37 @@ const App = () => {
   const [content,setContent]=useState('')
   const [posts,setPosts]=useState([])
  
-  const createNote=(event)=>{
-  //   event.preventDefault();
-  //   console.log(title)
-  //   console.log(content)
+  const createNote= async(event)=>{
+    event.preventDefault();
 
-  //   setTitle('')
-  //   setContent('')
-  //   setModalVisible(false)
+    const new_request= new Request(
+      `${baseURL}/posts/`,
+      {
+        body:JSON.stringify({title,content}),
+        headers:{
+          'Content-Type':'Application/Json'
+        },
+        method:'POST'
+      }
+    );
+
+    const response = await fetch(new_request) ;
+    const data= await response.json();
+    if (response.ok){
+      console.log(data)
+    }
+    else{
+      console.log("failed Network Request")
+    }
+
+    console.log(title)
+    console.log(content)
+
+    setTitle('')
+    setContent('')
+    setModalVisible(false)
+
+    getAllPosts()
 
   }
 
@@ -43,8 +67,17 @@ const App = () => {
     },[]
   )
 
-  const deleteItem=(noteId)=>{
+  const deleteItem= async (noteId)=>{
     console.log(noteId)
+    const response = await fetch(`${baseURL}/posts/${noteId}/`,
+      {method:'DELETE'}
+    )
+
+    if (response.ok){
+      console.log(response.status)
+    }
+
+    getAllPosts()
   }
 
   return (
@@ -54,27 +87,30 @@ const App = () => {
           <p className='title'>Guest Book</p>
         </div>
         <div className='add-section'>
-          <a className='add-btn' href='#'
+          <a className='add-btn' 
               onClick={()=>setModalVisible(true)}
           > Add Note</a>
         </div>
       </div>
       
       {posts.length > 0?
-          (<div className="post-list">
+          (
+          <div className="post-list">
           {
             posts.map(
               (item)=>(
                 <Note title={item.title} 
-                content={item.content}
-                        onclick={deleteItem(item.id)}
-                        key={item.id}
+                      content={item.content}
+                      noteId={item.id}
+                      key={item.id}
+                      onclick={deleteItem}
                   />
-
                 )
               )
           }
-          </div>)
+          </div>
+          
+        )
           :(
             <div className="posts">
               <p className='centerText'>No Posts</p>
@@ -88,28 +124,35 @@ const App = () => {
               <p className='form-header-text'>Create a Note</p>
             </div>
             <div>
-              <a href='#' className='close-btn'
-                  onClick={()=>setModalVisible(false)}
+              <a  className='close-btn'
+                  onclick={getAllPosts}
                   >X</a>
             </div>
           </div>
-          <form action="">
+          <form onSubmit={createNote}>
             <div className='form-group'>
               <label htmlFor='title'>Title</label>
-              <input type='text' name='title' id='title' 
-                value ={title}
-                onChange={(e)=>setTitle(e.target.value)}
-                className='form-control' />
+              <input type='text' 
+                    name='title' id='title' 
+                    value ={title}
+                    onChange={(e)=>setTitle(e.target.value)}
+                    className='form-control' 
+                    required
+                />
             </div>
             <div className='form-group'>
               <label htmlFor='content'>Content</label>
-              <textarea className='form-control' name='content' id='title' 
-                value ={content}
-                onChange={(e)=>setContent(e.target.value)}
-                cols='30' rows='8'></textarea>
+              <textarea className='form-control'  
+                        name='content' 
+                        id='content' 
+                        value ={content}
+                        onChange={(e)=>setContent(e.target.value)}
+                        cols='30' rows='8'
+                        required>
+              </textarea>
             </div>
             <div className='form-group'>
-              <input type='submit' value="SAVE" className='btn' onClick={createNote}/>
+              <input type='submit' value="SAVE" className='btn' href='#' onClick={createNote}/>
             </div>
           </form>
         </div>
