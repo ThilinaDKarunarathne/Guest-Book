@@ -30,6 +30,7 @@ const App = () => {
 
     const response = await fetch(new_request) ;
     const data= await response.json();
+
     if (response.ok){
       console.log(data)
     }
@@ -88,6 +89,7 @@ const App = () => {
         </div>
         <div className='add-section'>
           <a className='add-btn' 
+              href='#'
               onClick={()=>setModalVisible(true)}
           > Add Note</a>
         </div>
@@ -101,9 +103,8 @@ const App = () => {
               (item)=>(
                 <Note title={item.title} 
                       content={item.content}
-                      noteId={item.id}
+                      onclick={()=>deleteItem(item.id)}
                       key={item.id}
-                      onclick={deleteItem}
                   />
                 )
               )
@@ -124,8 +125,8 @@ const App = () => {
               <p className='form-header-text'>Create a Note</p>
             </div>
             <div>
-              <a  className='close-btn'
-                  onclick={getAllPosts}
+            <a href='#' className='close-btn'
+                  onClick={()=>setModalVisible(false)}
                   >X</a>
             </div>
           </div>

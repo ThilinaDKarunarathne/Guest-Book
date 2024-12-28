@@ -161,8 +161,8 @@ textarea{
     font-weight:bold;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color:rgb(7,43,80);
-    white-space:unset; 
-    width: flex;  
+    overflow-wrap: break-word; /* Fallback for better compatibility */
+    white-space: normal; /* Ensures text wraps normally */
 }
 
 .note-content{
