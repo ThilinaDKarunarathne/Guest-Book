@@ -23,7 +23,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/your-username/notes-web-app.git  
+git clone (https://github.com/ThilinaDKarunarathne/Guest-Book.git)
 cd notes-web-app  
 Navigate to the backend directory and create a virtual environment:
 
