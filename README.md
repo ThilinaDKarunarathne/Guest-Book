@@ -1,4 +1,5 @@
 Notes Management Web App
+
 This project is a Django-React Web Application that allows users to manage their notes. Users can add notes with a title and content, view them, and delete them as needed. The backend is built using Django, and the frontend is implemented in React. The application also integrates Swagger API for API documentation and testing.
 
 Features
